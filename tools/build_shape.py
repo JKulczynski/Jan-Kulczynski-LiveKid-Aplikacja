@@ -9,6 +9,11 @@ Co ten skrypt robi z oryginałem:
   3. grupuje wielokąty w 15 bloków i nadaje pięciu z nich identyfikatory sekcji
   4. zamienia sztywny #cccccc na currentColor, żeby kolorem sterował CSS
   5. dokłada etykiety liczone z pozycji bloków, nie wpisane ręcznie
+  6. wkleja gotową bryłę do index.html w miejsce poprzedniej
+
+Miejsce na podpis liczone jest z długości tekstu i kierunku etykiety
+(Space Mono ma stałą szerokość znaku), a nie zgadywane stałą - inaczej
+dłuższe podpisy wychodzą poza viewBox i są ucinane.
 
 Uruchomienie:  python tools/build_shape.py
 """
@@ -32,6 +37,9 @@ SECTIONS = {
 
 OFFSET = 165.0     # jak daleko od bryły odsunięta etykieta
 PAD = 28.0
+TXT_PX = 22.0      # .lbl__txt font-size
+TXT_ADV = 0.65     # szerokość znaku Space Mono razem z letter-spacing, w em
+NO_PX = 62.0       # .lbl__no font-size
 
 
 def build():
@@ -69,10 +77,14 @@ def build():
                 f'x2="{lx:.1f}" y2="{ly:.1f}"/>'
                 f'<text class="lbl__no" x="{lx:.1f}" y="{ly:.1f}" '
                 f'text-anchor="{anchor}">{tag[0]}</text>'
-                f'<text class="lbl__txt" x="{lx:.1f}" y="{ly + 26:.1f}" '
+                f'<text class="lbl__txt" x="{lx:.1f}" y="{ly + 24:.1f}" '
                 f'text-anchor="{anchor}">{tag[1]}</text></g>')
-            xs += [lx - 150, lx + 150]
-            ys += [ly - 45, ly + 40]
+            # podpis rozciąga się w stronę wskazaną przez text-anchor
+            w_txt = len(tag[1]) * TXT_PX * TXT_ADV
+            w_no = len(tag[0]) * NO_PX * 0.6
+            reach = max(w_txt, w_no)
+            xs += [lx - reach, lx] if anchor == "end" else [lx, lx + reach]
+            ys += [ly - NO_PX * 0.78, ly + 24 + TXT_PX * 0.3]
 
     x0, y0 = min(xs) - PAD, min(ys) - PAD
     w, h = max(xs) - min(xs) + PAD * 2, max(ys) - min(ys) + PAD * 2
@@ -85,6 +97,21 @@ def build():
     with io.open(os.path.join(ROOT, "shape.svg"), "w", encoding="utf-8") as fh:
         fh.write(svg)
     print(f"shape.svg: {len(svg)} znakow, {len(blocks)} blokow, {len(labels)} etykiet")
+
+    inline(svg)
+
+
+def inline(svg):
+    """Wkleja bryłę do index.html. Bryła jest inline, bo musi dziedziczyć
+    currentColor i przyjmować zdarzenia kliknięcia - <img> nie umie ani jednego."""
+    path = os.path.join(ROOT, "index.html")
+    with io.open(path, encoding="utf-8") as fh:
+        html = fh.read()
+    a = html.index('<svg class="shape"')
+    b = html.index("</svg>", a) + len("</svg>")
+    with io.open(path, "w", encoding="utf-8") as fh:
+        fh.write(html[:a] + svg + html[b:])
+    print(f"index.html: bryla podmieniona ({b - a} -> {len(svg)} znakow)")
 
 
 if __name__ == "__main__":

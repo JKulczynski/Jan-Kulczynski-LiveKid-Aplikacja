@@ -31,7 +31,8 @@ Całość czyta się w trzech plikach.
 | `styles.css` | Gramatyka wizualna: hard-edge, czerń, biel, jedna szarość |
 | `app.js` | Nawigacja przez bryłę |
 | `shape.svg` | Bryła, generowana skryptem z `tools/` |
-| `tools/build_shape.py` | Składa bryłę: spłaszcza transformacje, grupuje bloki, dokłada etykiety |
+| `tools/build_shape.py` | Składa bryłę: spłaszcza transformacje, grupuje bloki, dokłada etykiety, wkleja wynik do `index.html` |
+| `fonts/` | Space Grotesk i Space Mono, `.woff2`, serwowane z własnej domeny |
 
 ## Bryła
 
@@ -61,7 +62,18 @@ a pod bryłą pojawia się zwykła lista.
 Zero gradientów, zero poświaty, zero rozmycia, zero obrazów rastrowych.
 Całą robotę wizualną robi kreskowanie bryły.
 
-Typografia systemowa, żeby nie ładować webfontów. **Zero requestów do zewnętrznych domen.**
+**Space Grotesk** na nagłówki i tekst, **Space Mono** na etykiety. Jedna rodzina, dwa
+warianty: mono jest pierwowzorem, grotesk został z niego wyprowadzony, więc podpis
+i nagłówek mają tę samą konstrukcję liter. Płaskie zakończenia, kwadratowe brzuszki
+i prostokątne kropki są tą samą geometrią co bryła.
+
+Etykiety przy bryle to podpisy monem na końcu odnośnika, czyli adnotacja rysunku
+technicznego. Bryła jest izometrycznym rysunkiem technicznym, więc opisana jest tak,
+jak się opisuje rysunek techniczny.
+
+Pliki `.woff2` leżą w `fonts/` (73 kB, cztery podzbiory: latin i latin-ext dla obu
+krojów). **Zero requestów do zewnętrznych domen** - font jedzie z tej samej domeny
+co reszta. Licencja SIL OFL 1.1, kopia w `fonts/LICENSE-fonts.txt`.
 
 ## Stan
 
