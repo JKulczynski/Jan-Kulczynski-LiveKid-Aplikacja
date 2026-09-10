@@ -126,13 +126,32 @@ strong { font-weight: 680; color: #fff; }
   .shape { max-height: 46svh; }
 }
 
-/* ── Nawigacja zapasowa, widoczna na telefonie ──────────────── */
+/* ── Dwa stany: brama i dokument ────────────────────────────── */
 
-.jump { display: none; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.jump li { border-bottom: 1px solid var(--line); }
-.jump a { display: flex; gap: 1rem; padding: 0.9rem 0; color: var(--paper); text-decoration: none; }
-.jump b { color: var(--dim); font-weight: 680; min-width: 2.5ch; }
-@media (max-width: 52rem) { .jump { display: block; } }
+body.is-hub main,
+body.is-hub .bar,
+body.is-hub footer { display: none; }
+
+body.is-doc .hero { display: none; }
+
+.bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+  padding: 1rem var(--gutter);
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  border-bottom: 1px solid var(--line);
+}
+.bar a { color: var(--dim); text-decoration: none; }
+.bar a:hover { color: var(--paper); }
+
+body.is-doc main { padding-top: 3.5rem; }
+
+.next { margin-top: 3rem; }
+.next a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 0.35rem; }
+.next a:hover { border-bottom-color: var(--paper); }
+.next .mono { color: var(--dim); margin-right: 0.75rem; }
+
+/* dopoki skrypt nie wstanie, pokazujemy wszystko */
+body.no-js main, body.no-js footer { display: block; }
 
 /* ── Sekcje ─────────────────────────────────────────────────── */
 
