@@ -96,16 +96,10 @@ strong { font-weight: 680; color: #fff; }
   overflow: visible;
 }
 
-.face { stroke: none; }
-.edge { fill: none; stroke: var(--ink); stroke-width: 2.5; }
-
-.blk.hit { cursor: pointer; }
-.blk.hit .face { opacity: 0.55; transition: opacity 120ms linear; }
-.blk.hit:hover .face,
-.blk.hit:focus-visible .face,
-.blk.hit.is-on .face { opacity: 1; }
-
-.blk:not(.hit) .face { opacity: 0.22; }
+.blk polygon { fill: currentColor; stroke: none; }
+.blk { opacity: 0.26; transition: opacity 140ms linear; }
+.blk--hit { opacity: 0.62; cursor: pointer; }
+.blk--hit:hover, .blk--hit:focus-visible, .blk--hit.is-on { opacity: 1; }
 
 .tick { stroke: var(--line); stroke-width: 2; }
 .lbl { cursor: pointer; }
@@ -128,7 +122,7 @@ strong { font-weight: 680; color: #fff; }
 
 @media (max-width: 52rem) {
   .lbl { display: none; }        /* na telefonie bryla jest sama, nawigacja nizej */
-  .blk.hit .face { opacity: 0.55; }
+  .blk--hit { opacity: 0.62; }
   .shape { max-height: 46svh; }
 }
 

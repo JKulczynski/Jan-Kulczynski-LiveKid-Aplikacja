@@ -29,7 +29,24 @@ Całość czyta się w trzech plikach.
 |---|---|
 | `index.html` | Pięć sekcji, treść i struktura |
 | `styles.css` | Gramatyka wizualna: ciemność, jedno zimne źródło światła, złamana biel |
-| `app.js` | Element interaktywny (jeszcze nie ma) |
+| `app.js` | Nawigacja przez bryłę |
+| `shape.svg` | Bryła, generowana skryptem z `tools/` |
+| `tools/build_shape.py` | Składa bryłę: spłaszcza transformacje, grupuje bloki, dokłada etykiety |
+
+## Bryła
+
+Wzór **Chevron Blocks** z [bookofshapes.com](https://bookofshapes.com), autor Nikolaj Sokolowski.
+Licencja pozwala na dowolne użycie i modyfikację bez atrybucji, kopia w `tools/LICENSE-bookofshapes.txt`.
+Kredyt jest tu mimo to, bo nie kosztuje nic.
+
+Oryginał miał 1356 zagnieżdżonych grup i 218 kB. `tools/build_shape.py` spłaszcza
+transformacje do współrzędnych, grupuje wielokąty w 15 bloków, pięciu z nich nadaje
+identyfikatory sekcji i zamienia sztywny `#cccccc` na `currentColor`. Wynik: 85 kB
+i struktura, w którą da się kliknąć.
+
+**Bryła jest nawigacją.** Pięć bloków prowadzi do pięciu sekcji. Przewijanie działa
+normalnie, więc bryła jest skrótem, a nie jedyną drogą. Na telefonie etykiety znikają,
+a pod bryłą pojawia się zwykła lista.
 
 ## Gramatyka wizualna
 
