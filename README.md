@@ -28,7 +28,7 @@ Całość czyta się w trzech plikach.
 | Plik | Co robi |
 |---|---|
 | `index.html` | Pięć sekcji, treść i struktura |
-| `styles.css` | Gramatyka wizualna: ciemność, jedno zimne źródło światła, złamana biel |
+| `styles.css` | Gramatyka wizualna: hard-edge, czerń, biel, jedna szarość |
 | `app.js` | Nawigacja przez bryłę |
 | `shape.svg` | Bryła, generowana skryptem z `tools/` |
 | `tools/build_shape.py` | Składa bryłę: spłaszcza transformacje, grupuje bloki, dokłada etykiety |
@@ -50,18 +50,18 @@ a pod bryłą pojawia się zwykła lista.
 
 ## Gramatyka wizualna
 
-Trzy kolory i koniec:
+**Geometric Hard-Edge.** Trzy kolory i koniec:
 
 ```
---ground     #06080d   prawie czerń z niebieskim odcieniem
---light      #8fb8e8   jedyne źródło światła, zimne
---text       #e4e7ec   złamana biel
+--ink    #0a0a0a   czerń
+--paper  #f2f2f0   biel łamana
+--dim    #6e6e6e   jedna szarość
 ```
 
-Bez gradientów dekoracyjnych, bez stocków, bez ozdobników. Hero to jedno źródło
-światła i wiązki zbiegające się w jednym punkcie, zrobione czystym SVG.
+Zero gradientów, zero poświaty, zero rozmycia, zero obrazów rastrowych.
+Całą robotę wizualną robi kreskowanie bryły.
 
-Typografia systemowa, żeby nie ładować webfontów. Zero requestów do zewnętrznych domen.
+Typografia systemowa, żeby nie ładować webfontów. **Zero requestów do zewnętrznych domen.**
 
 ## Stan
 
