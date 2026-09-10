@@ -5,11 +5,11 @@ wypluwa gotowy SVG z siatki współrzędnych, więc przesunięcie bloku albo
 zmiana gęstości kreskowania to zmiana jednej liczby, a nie przepisywanie
 kilkuset punktów.
 
-Uruchomienie:  python tools/generate_shape.py > shape.svg
+Uruchomienie:  python tools/generate_shape.py     (zapisuje shape.svg w UTF-8)
 """
 
+import io
 import math
-import sys
 
 S = 100.0                      # bok szescianu
 DX = S * math.cos(math.radians(30))   # krok poziomy
@@ -131,4 +131,8 @@ def build():
 
 
 if __name__ == "__main__":
-    sys.stdout.write(build())
+    # zapis do pliku, a nie przez stdout: przekierowanie w konsoli Windows
+    # koduje w cp1250 i psuje polskie znaki
+    with io.open("shape.svg", "w", encoding="utf-8") as fh:
+        fh.write(build())
+    print("shape.svg zapisany")
