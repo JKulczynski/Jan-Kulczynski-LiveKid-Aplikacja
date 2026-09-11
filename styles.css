@@ -215,7 +215,8 @@ section { padding-block: clamp(4rem, 11vh, 8rem); border-top: 1px solid var(--li
 @media (min-width: 52rem) { .levers { grid-template-columns: 1fr 1fr; } }
 .lever { background: var(--ink); padding: clamp(1.25rem, 3.5vw, 2.25rem); }
 .lever .mono { color: var(--dim); }
-.lever p { margin-top: 0.6rem; color: var(--dim); }
+.lever p { margin-top: 0.6rem; }
+.lever h3 { margin-top: 0.5rem; }
 
 /* ── Podtytuły i tabela danych ──────────────────────────────── */
 
