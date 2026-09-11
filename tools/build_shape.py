@@ -28,11 +28,11 @@ ROOT = os.path.dirname(HERE)
 
 # indeks bloku w bryle -> (numer sekcji, podpis)
 SECTIONS = {
-    0:  ("01", "Gdzie jesteście"),
-    5:  ("02", "Co przecieka"),
-    6:  ("03", "Co już zrobiłem"),
+    0:  ("01", "Co wiem"),
+    5:  ("02", "Dziesięć razy"),
+    6:  ("03", "Agent"),
     12: ("04", "Kto to zrobił"),
-    13: ("05", "Co może nie wyjść"),
+    13: ("05", "Porozmawiajmy"),
 }
 
 OFFSET = 165.0     # jak daleko od bryły odsunięta etykieta
