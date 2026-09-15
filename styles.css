@@ -132,6 +132,10 @@ strong { font-weight: 700; color: #fff; }
 .hero__stage { display: grid; place-items: center; min-width: 0; min-height: 0; height: 100%; }
 
 .sign { position: absolute; right: var(--gutter); bottom: clamp(1.5rem, 4vh, 2.5rem); color: var(--dim); margin: 0; }
+.sign--left { right: auto; left: var(--gutter); text-transform: none; letter-spacing: 0.04em; }
+.sign a { color: var(--dim); text-decoration: none; border-bottom: 1px solid var(--line); }
+.sign a:hover { color: var(--paper); border-bottom-color: var(--paper); }
+@media (max-width: 52rem) { .sign--left { position: static; margin-top: 1rem; } }
 
 /* ── Bryła ──────────────────────────────────────────────────── */
 
