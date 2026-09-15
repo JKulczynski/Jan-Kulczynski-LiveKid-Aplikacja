@@ -283,6 +283,15 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 .fig__v { font-size: var(--s-2); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
 .fig__l { font-size: var(--s--1); color: var(--dim); margin-top: 0.6rem; }
 
+/* ── Kontakt ────────────────────────────────────────────────── */
+
+.contact { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 2rem; max-width: 60rem; }
+.contact p { margin: 0 0 0.6rem; }
+.contact__name { font-weight: 700; font-size: var(--s-1); margin-bottom: 1rem !important; }
+.contact .mono { color: var(--dim); margin-right: 0.75rem; }
+.contact a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.contact a:hover { border-bottom-color: var(--paper); }
+
 /* ── Zaślepki ───────────────────────────────────────────────── */
 
 .todo { border: 1px dashed var(--line); padding: clamp(1.25rem, 3.5vw, 2rem); color: var(--dim); font-size: var(--s--1); }
