@@ -307,6 +307,8 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 .agent__table th, .agent__table td { text-align: left; vertical-align: top; padding: 0.7rem 0.75rem 0.7rem 0; border-bottom: 1px solid var(--line); }
 .agent__table th { font-family: "Space Mono", ui-monospace, monospace; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
 .agent__table td.num, .agent__table th.num { text-align: right; padding-right: 1rem; }
+.agent__table td strong { font-weight: 700; color: var(--paper); }
+.agent__table td.contact-cell { white-space: nowrap; }
 .agent__table a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .agent__table a:hover { border-bottom-color: var(--paper); }
 .tag { display: inline-block; margin-left: 0.5rem; font-family: "Space Mono", ui-monospace, monospace; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); padding: 0.05rem 0.35rem; }

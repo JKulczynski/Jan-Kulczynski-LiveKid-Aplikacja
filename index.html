@@ -143,7 +143,7 @@
     <h2 class="measure">Żeby wnieść swoje pięć groszy do LiveKid już teraz, zrobiłem dla was agenta.</h2>
     <div class="measure">
       <p>Agent bada rynek placówek i podrzuca te, których nie ma jeszcze w bazie Przedszkolowo. Bierze państwowy Rejestr Szkół i Placówek Oświatowych (każde przedszkole i punkt przedszkolny w Polsce, z adresem, telefonem i mailem), porównuje go z profilami na Przedszkolowo i zostawia to, czego u was nie ma. Poniżej jego wynik z dzisiaj.</p>
-      <p>Każda placówka na tej liście to jednocześnie brakujący profil w waszej bazie i kontakt do placówki, która nie ma jeszcze systemu. Czyli drzwi 01 i 02 z poprzedniej sekcji, tylko w wersji, którą da się od razu pobrać.</p>
+      <p>Każda placówka na tej liście to jednocześnie brakujący profil w waszej bazie i gotowy kontakt do placówki, która może nie mieć jeszcze systemu.</p>
       <p class="mono dim">Wybierz województwo, opcjonalnie wpisz miejscowość, pobierz listę.</p>
     </div>
 
@@ -159,7 +159,7 @@
       <div class="figures" data-agent-stats></div>
       <div class="agent__scroll">
         <table class="agent__table">
-          <thead><tr><th>Placówka</th><th>Miejscowość</th><th>Typ</th><th class="num">Dzieci</th><th>WWW</th></tr></thead>
+          <thead><tr><th>Placówka</th><th>Miejscowość</th><th>Typ</th><th class="num">Dzieci</th><th>Kontakt</th><th>WWW</th></tr></thead>
           <tbody data-agent-rows></tbody>
         </table>
       </div>
@@ -173,7 +173,7 @@
     <h3 class="sub">Jak to działa i gdzie się myli</h3>
     <div class="measure">
       <p>Agent to trzy skrypty w folderze <code>agent/</code> w repozytorium tej strony: pobranie rejestru przez publiczne API RSPO, pobranie listy profili Przedszkolowo z sitemapy, dopasowanie po nazwie. Cały przebieg trwa około minuty, można go puścić ponownie, kiedy rejestr się zmieni.</p>
-      <p>Dopasowanie jest po nazwie, nie po adresie, bo miejscowość jest tylko na profilach, a pobieranie trzydziestu tysięcy profili nie było potrzebne, żeby pokazać, że to działa. Konsekwencja: placówki o nazwie, która na Przedszkolowo występuje w wielu miastach, agent liczy jako obecne. Lista jest więc raczej za krótka niż za długa. Żłobki są w osobnym rejestrze ministerstwa rodziny i dziś ich tu nie ma. Telefony i maile pochodzą z rejestru publicznego, na stronie ich nie pokazuję, są tylko w CSV.</p>
+      <p>Dopasowanie jest po nazwie, nie po adresie, bo miejscowość jest tylko na profilach, a pobieranie trzydziestu tysięcy profili nie było potrzebne, żeby pokazać, że to działa. Konsekwencja: placówki o nazwie, która na Przedszkolowo występuje w wielu miastach, agent liczy jako obecne. Lista jest więc raczej za krótka niż za długa. Żłobki są w osobnym rejestrze ministerstwa rodziny i dziś ich tu nie ma. Adresy, telefony i maile pochodzą z rejestru publicznego, tak jak podała je placówka.</p>
     </div>
 
     <p class="next"><a href="#" data-next="04"><span class="mono">Dalej</span> Kto to zrobił &rarr;</a></p>

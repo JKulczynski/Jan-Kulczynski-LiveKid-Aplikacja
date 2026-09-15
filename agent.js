@@ -88,9 +88,14 @@
     var rows = VIEW.slice(0, LIMIT);
     elBody.innerHTML = rows.map(function (r) {
       var www = r.www ? '<a href="' + esc(/^https?:/.test(r.www) ? r.www : "https://" + r.www) + '" target="_blank" rel="noopener">' + esc(r.www.replace(/^https?:\/\//, "").replace(/\/$/, "")) + '</a>' : '<span class="dim">brak</span>';
-      return '<tr><td>' + esc(r.n) + '</td><td>' + esc(r.m) + '</td><td>' + esc(r.t) + (r.p ? '' : '<span class="tag">niepubl.</span>') + '</td><td class="num">' + (r.d == null ? '' : fmt(r.d)) + '</td><td>' + www + '</td></tr>';
+      var addr = [r.a, r.k].filter(Boolean).join(", ");
+      var contact = [
+        r.tel ? '<a href="tel:' + esc(r.tel.replace(/[^\d+]/g, "")) + '">' + esc(r.tel) + '</a>' : '',
+        r.mail ? '<a href="mailto:' + esc(r.mail) + '">' + esc(r.mail) + '</a>' : ''
+      ].filter(Boolean).join('<br>') || '<span class="dim">brak</span>';
+      return '<tr><td><strong>' + esc(r.n) + '</strong>' + (addr ? '<br><span class="dim">' + esc(addr) + '</span>' : '') + '</td><td>' + esc(r.m) + '</td><td>' + esc(r.t) + (r.p ? '' : '<span class="tag">niepubl.</span>') + '</td><td class="num">' + (r.d == null ? '' : fmt(r.d)) + '</td><td class="contact-cell">' + contact + '</td><td>' + www + '</td></tr>';
     }).join("");
-    if (!rows.length) elBody.innerHTML = '<tr><td colspan="5" class="dim">Nic nie pasuje do filtrów.</td></tr>';
+    if (!rows.length) elBody.innerHTML = '<tr><td colspan="6" class="dim">Nic nie pasuje do filtrów.</td></tr>';
     var rest = VIEW.length - rows.length;
     elMore.hidden = rest <= 0;
     elMore.textContent = rest > 0 ? "Pokaż kolejne " + fmt(Math.min(rest, 200)) + " z " + fmt(rest) : "";
