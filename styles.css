@@ -312,7 +312,10 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 .agent__table a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .agent__table a:hover { border-bottom-color: var(--paper); }
 .tag { display: inline-block; margin-left: 0.5rem; font-family: "Space Mono", ui-monospace, monospace; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); padding: 0.05rem 0.35rem; }
-.agent__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+.agent__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.25rem; }
+.agent__field--inline { grid-template-columns: auto auto; align-items: center; gap: 0.6rem; }
+.agent__field--inline select { width: auto; padding: 0.5rem 0.75rem; }
+.agent__actions .btn { margin-left: auto; }
 .btn {
   font: inherit; font-family: "Space Mono", ui-monospace, monospace; font-size: var(--s--1); letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink); background: var(--paper); border: 1px solid var(--paper); padding: 0.8rem 1.2rem; cursor: pointer; border-radius: 0;

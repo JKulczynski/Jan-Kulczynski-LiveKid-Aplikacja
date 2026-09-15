@@ -13,12 +13,14 @@
   var elNonpub = root.querySelector("[data-agent-nonpublic]");
   var elStats = root.querySelector("[data-agent-stats]");
   var elBody = root.querySelector("[data-agent-rows]");
-  var elMore = root.querySelector("[data-agent-more]");
+  var elLimit = root.querySelector("[data-agent-limit]");
+  var elCount = root.querySelector("[data-agent-count]");
   var elCsv = root.querySelector("[data-agent-csv]");
   var elMeta = root.querySelector("[data-agent-meta]");
   var elStatus = root.querySelector("[data-agent-status]");
 
-  var DATA = null, VIEW = [], LIMIT = 50;
+  var DATA = null, VIEW = [];
+  function limit() { var v = elLimit.value; return v === "all" ? Infinity : parseInt(v, 10); }
 
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -39,7 +41,7 @@
       });
       elMeta.textContent = "Przebieg agenta: " + d.generated + ". Rejestr RSPO: " + fmt(d.source_rspo) +
         " placówek. Przedszkolowo: " + fmt(d.source_pz) + " profili. Dopasowanie po nazwie: " + fmt(d.matched) +
-        ". Bez dopasowania: " + fmt(d.missing) + ". Jedna osoba, jeden wieczór.";
+        ". Bez dopasowania: " + fmt(d.missing) + ".";
       elStatus.textContent = "";
       return d;
     }).catch(function () {
@@ -56,7 +58,6 @@
       if (q && fold(r.m).indexOf(q) < 0) return false;
       return true;
     });
-    LIMIT = 50;
     renderStats(st, onlyNP, q);
     renderRows();
   }
@@ -85,7 +86,7 @@
   }
 
   function renderRows() {
-    var rows = VIEW.slice(0, LIMIT);
+    var rows = VIEW.slice(0, limit());
     elBody.innerHTML = rows.map(function (r) {
       var www = r.www ? '<a href="' + esc(/^https?:/.test(r.www) ? r.www : "https://" + r.www) + '" target="_blank" rel="noopener">' + esc(r.www.replace(/^https?:\/\//, "").replace(/\/$/, "")) + '</a>' : '<span class="dim">brak</span>';
       var addr = [r.a, r.k].filter(Boolean).join(", ");
@@ -96,9 +97,7 @@
       return '<tr><td><strong>' + esc(r.n) + '</strong>' + (addr ? '<br><span class="dim">' + esc(addr) + '</span>' : '') + '</td><td>' + esc(r.m) + '</td><td>' + esc(r.t) + (r.p ? '' : '<span class="tag">niepubl.</span>') + '</td><td class="num">' + (r.d == null ? '' : fmt(r.d)) + '</td><td class="contact-cell">' + contact + '</td><td>' + www + '</td></tr>';
     }).join("");
     if (!rows.length) elBody.innerHTML = '<tr><td colspan="6" class="dim">Nic nie pasuje do filtrów.</td></tr>';
-    var rest = VIEW.length - rows.length;
-    elMore.hidden = rest <= 0;
-    elMore.textContent = rest > 0 ? "Pokaż kolejne " + fmt(Math.min(rest, 200)) + " z " + fmt(rest) : "";
+    elCount.textContent = VIEW.length ? "Widać " + fmt(rows.length) + " z " + fmt(VIEW.length) : "";
     elCsv.disabled = !VIEW.length;
     elCsv.textContent = "Pobierz CSV (" + fmt(VIEW.length) + " wierszy, z telefonem i mailem)";
   }
@@ -120,7 +119,7 @@
   elState.addEventListener("change", apply);
   elNonpub.addEventListener("change", apply);
   elCity.addEventListener("input", apply);
-  elMore.addEventListener("click", function () { LIMIT += 200; renderRows(); });
+  elLimit.addEventListener("change", renderRows);
   elCsv.addEventListener("click", csv);
 
   /* wczytaj, gdy sekcja jest widoczna albo od razu, jeśli strona otwarta na #s03 */

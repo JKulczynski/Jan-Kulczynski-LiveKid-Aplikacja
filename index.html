@@ -164,7 +164,9 @@
         </table>
       </div>
       <div class="agent__actions">
-        <button type="button" class="btn btn--ghost" data-agent-more hidden></button>
+        <label class="agent__field agent__field--inline"><span class="mono">Na stronie</span>
+          <select data-agent-limit><option value="10" selected>10</option><option value="50">50</option><option value="100">100</option><option value="all">wszystkie</option></select></label>
+        <span class="mono dim" data-agent-count></span>
         <button type="button" class="btn" data-agent-csv disabled>Pobierz CSV</button>
       </div>
       <p class="mono dim src" data-agent-meta></p>
