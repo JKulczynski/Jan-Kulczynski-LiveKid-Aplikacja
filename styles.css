@@ -246,14 +246,13 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 .tl { position: relative; list-style: none; margin: 2.5rem 0 0; padding: 0; }
 .tl::before {
   content: ""; position: absolute; left: 50%; top: 0; bottom: 0;
-  width: 2px; margin-left: -1px; background: var(--paper);
+  width: 2px; transform: translateX(-50%); background: var(--paper);
 }
 .tl__item { position: relative; display: grid; grid-template-columns: 1fr 5rem 1fr; align-items: start; margin-bottom: 2.5rem; }
 .tl__item:last-child { margin-bottom: 0; }
 .tl__node {
-  grid-column: 2; grid-row: 1; justify-self: center; margin-top: 0.9rem;
-  width: 1.75rem; height: 1.75rem; border: 3px solid var(--paper); border-radius: 50%;
-  background: transparent; box-sizing: border-box;
+  position: absolute; left: 50%; top: 1.15rem; transform: translate(-50%, -50%);
+  width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--paper);
 }
 .tl__card { grid-row: 1; position: relative; border: 1px solid var(--line); padding: clamp(1.25rem, 3vw, 2rem); background: var(--ink); }
 .tl__card .mono { color: var(--dim); }
@@ -262,18 +261,18 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 .tl__card p:last-child { margin-bottom: 0; }
 .tl__card a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); }
 .tl__card a:hover { border-bottom-color: var(--paper); }
-.tl__card::before { content: ""; position: absolute; top: 1.7rem; width: 1.65rem; height: 2px; background: var(--paper); }
+.tl__card::before { content: ""; position: absolute; top: calc(1.15rem - 1px); width: 5rem; height: 2px; background: var(--paper); }
 .tl__item:nth-child(odd)  .tl__card { grid-column: 1; }
 .tl__item:nth-child(even) .tl__card { grid-column: 3; }
-.tl__item:nth-child(odd)  .tl__card::before { right: -1.65rem; }
-.tl__item:nth-child(even) .tl__card::before { left: -1.65rem; }
+.tl__item:nth-child(odd)  .tl__card::before { right: -5rem; }
+.tl__item:nth-child(even) .tl__card::before { left: -5rem; }
 
 @media (max-width: 52rem) {
-  .tl::before { left: 0.875rem; margin-left: 0; }
-  .tl__item { grid-template-columns: 1.75rem 1.5rem 1fr; }
-  .tl__node { grid-column: 1; justify-self: start; }
+  .tl::before { left: 0.75rem; }
+  .tl__item { grid-template-columns: 1.5rem 1.5rem 1fr; }
+  .tl__node { left: 0.75rem; }
   .tl__item .tl__card { grid-column: 3; }
-  .tl__item .tl__card::before { left: -1.5rem; right: auto; width: 1.5rem; }
+  .tl__item .tl__card::before { left: -2.25rem; right: auto; width: 2.25rem; }
 }
 
 /* ── Liczby ─────────────────────────────────────────────────── */
