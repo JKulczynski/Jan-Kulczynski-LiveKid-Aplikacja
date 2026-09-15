@@ -288,7 +288,8 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 .contact { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 2rem; max-width: 60rem; }
 .contact p { margin: 0 0 0.6rem; }
 .contact__name { font-weight: 700; font-size: var(--s-1); margin-bottom: 1rem !important; }
-.contact .mono { color: var(--dim); margin-right: 0.75rem; }
+.contact .mono { color: var(--dim); display: inline-block; min-width: 9rem; }
+@media (max-width: 40rem) { .contact .mono { display: block; min-width: 0; margin-bottom: 0.15rem; } }
 .contact a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .contact a:hover { border-bottom-color: var(--paper); }
 
