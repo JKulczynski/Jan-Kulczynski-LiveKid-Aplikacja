@@ -8,6 +8,7 @@
   var root = document.getElementById("agent");
   if (!root) return;
 
+  var elKind = root.querySelector("[data-agent-kind]");
   var elState = root.querySelector("[data-agent-state]");
   var elCity = root.querySelector("[data-agent-city]");
   var elNonpub = root.querySelector("[data-agent-nonpublic]");
@@ -39,9 +40,9 @@
       names.forEach(function (n) {
         var o = document.createElement("option"); o.value = n; o.textContent = n; elState.appendChild(o);
       });
-      elMeta.textContent = "Przebieg agenta: " + d.generated + ". Rejestr RSPO: " + fmt(d.source_rspo) +
-        " placówek. Przedszkolowo: " + fmt(d.source_pz) + " profili. Dopasowanie po nazwie: " + fmt(d.matched) +
-        ". Bez dopasowania: " + fmt(d.missing) + ".";
+      elMeta.textContent = "Przebieg agenta: " + d.generated + ". RSPO: " + fmt(d.source_rspo) +
+        " przedszkoli i punktów. Rejestr żłobków: " + fmt(d.source_zlobki) + " żłobków i klubów. Przedszkolowo: " + fmt(d.source_pz) +
+        " profili. Bez profilu: " + fmt(d.missing) + " przedszkoli i " + fmt(d.missing_z) + " żłobków.";
       elStatus.textContent = "";
       return d;
     }).catch(function () {
@@ -51,38 +52,33 @@
 
   function apply() {
     if (!DATA) return;
-    var st = elState.value, q = fold(elCity.value.trim()), onlyNP = elNonpub.checked;
+    var st = elState.value, q = fold(elCity.value.trim()), onlyNP = elNonpub.checked, kind = elKind.value;
     VIEW = DATA.rows.filter(function (r) {
+      if (kind && r.kat !== kind) return false;
       if (st && r.w !== st) return false;
       if (onlyNP && r.p) return false;
       if (q && fold(r.m).indexOf(q) < 0) return false;
       return true;
     });
-    renderStats(st, onlyNP, q);
+    renderStats(st, onlyNP, q, kind);
     renderRows();
   }
 
-  function renderStats(st, onlyNP, q) {
-    var rspo = 0, onpz = 0, miss = 0;
-    if (st) {
-      var s = DATA.states[st];
-      rspo = onlyNP ? s.nonpublic : s.rspo;
-      miss = onlyNP ? s.missing_nonpublic : s.missing;
-      onpz = rspo - miss;
-    } else {
-      Object.keys(DATA.states).forEach(function (k) {
-        var s = DATA.states[k];
-        rspo += onlyNP ? s.nonpublic : s.rspo;
-        miss += onlyNP ? s.missing_nonpublic : s.missing;
-      });
-      onpz = rspo - miss;
-    }
+  function renderStats(st, onlyNP, q, kind) {
+    var rspo = 0, miss = 0, names = st ? [st] : Object.keys(DATA.states);
+    names.forEach(function (k) {
+      var s = DATA.states[k];
+      if (kind !== "zlobek") { rspo += onlyNP ? s.nonpublic : s.rspo; miss += onlyNP ? s.missing_nonpublic : s.missing; }
+      if (kind !== "przedszkole") { rspo += s.z_rspo; miss += onlyNP ? s.z_missing_nonpublic : s.z_missing; }
+    });
+    var onpz = rspo - (function () { var m = 0; names.forEach(function (k) { var s = DATA.states[k]; if (kind !== "zlobek") m += onlyNP ? s.missing_nonpublic : s.missing; if (kind !== "przedszkole") m += s.z_missing; }); return m; })();
+    var what = kind === "zlobek" ? "żłobków i klubów" : kind === "przedszkole" ? "przedszkoli i punktów" : "placówek";
     var scope = st || "cała Polska";
-    if (onlyNP) scope += ", tylko niepubliczne";
+    var note = onlyNP && kind !== "przedszkole" ? " (rejestr żłobków nie rozróżnia publicznych, więc liczba obejmuje wszystkie)" : "";
     elStats.innerHTML =
-      '<div class="fig"><p class="fig__v">' + fmt(rspo) + '</p><p class="fig__l">w rejestrze RSPO, ' + esc(scope) + '</p></div>' +
+      '<div class="fig"><p class="fig__v">' + fmt(rspo) + '</p><p class="fig__l">' + esc(what) + ' w rejestrze, ' + esc(scope) + (onlyNP && kind === "przedszkole" ? ', tylko niepubliczne' : '') + esc(note) + '</p></div>' +
       '<div class="fig"><p class="fig__v">' + fmt(onpz) + '</p><p class="fig__l">z nazwą obecną na Przedszkolowo</p></div>' +
-      '<div class="fig"><p class="fig__v">' + fmt(q ? VIEW.length : miss) + '</p><p class="fig__l">' + (q ? 'bez profilu, miejscowość „' + esc(elCity.value.trim()) + '”' : 'bez profilu na Przedszkolowo') + '</p></div>';
+      '<div class="fig"><p class="fig__v">' + fmt(q ? VIEW.length : miss) + '</p><p class="fig__l">bez profilu na Przedszkolowo' + (onlyNP ? ', niepubliczne' : '') + (q ? ', miejscowość „' + esc(elCity.value.trim()) + '”' : '') + '</p></div>';
   }
 
   function renderRows() {
@@ -103,19 +99,20 @@
   }
 
   function csv() {
-    var head = ["nazwa", "typ", "wojewodztwo", "miejscowosc", "adres", "kod", "publiczna", "liczba_dzieci", "www", "telefon", "email", "organ_prowadzacy", "rspo"];
+    var head = ["nazwa", "typ", "wojewodztwo", "miejscowosc", "adres", "kod", "publiczna", "liczba_dzieci", "www", "telefon", "email", "organ_prowadzacy", "id_rejestru"];
     var lines = [head.join(";")].concat(VIEW.map(function (r) {
-      return [r.n, r.t, r.w, r.m, r.a, r.k, r.p ? "tak" : "nie", r.d == null ? "" : r.d, r.www, r.tel, r.mail, r.org, r.rspo]
+      return [r.n, r.t, r.w, r.m, r.a, r.k, r.p ? "tak" : "nie", r.d == null ? "" : r.d, r.www, r.tel, r.mail, r.org, r.id]
         .map(function (v) { v = String(v == null ? "" : v).replace(/"/g, '""'); return /[;"\n]/.test(v) ? '"' + v + '"' : v; }).join(";");
     }));
     var blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "przedszkolowo-luka-" + (elState.value ? fold(elState.value).replace(/\W+/g, "-") : "polska") + ".csv";
+    a.download = "przedszkolowo-luka-" + (elKind.value || "wszystkie") + "-" + (elState.value ? fold(elState.value).replace(/\W+/g, "-") : "polska") + ".csv";
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
 
+  elKind.addEventListener("change", apply);
   elState.addEventListener("change", apply);
   elNonpub.addEventListener("change", apply);
   elCity.addEventListener("input", apply);

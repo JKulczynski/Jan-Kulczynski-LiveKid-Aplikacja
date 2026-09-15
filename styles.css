@@ -291,7 +291,7 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 
 .agent { margin-top: 2.5rem; border: 1px solid var(--line); padding: clamp(1.25rem, 3vw, 2rem); }
 .agent__controls { display: grid; gap: 1rem 1.5rem; grid-template-columns: 1fr; align-items: end; }
-@media (min-width: 52rem) { .agent__controls { grid-template-columns: 1fr 1fr auto; } }
+@media (min-width: 52rem) { .agent__controls { grid-template-columns: 1fr 1fr 1fr auto; } }
 .agent__field { display: grid; gap: 0.4rem; }
 .agent__field .mono { color: var(--dim); }
 .agent__field select, .agent__field input {
