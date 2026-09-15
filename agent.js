@@ -1,0 +1,129 @@
+/* Sekcja 03: agent, wynik na stronie.
+   Czyta data/luka.json (wynik przebiegu agenta z agent/), filtruje w przeglądarce,
+   buduje CSV z tego, co widać. Zero backendu, zero requestów poza własną domeną. */
+
+(function () {
+  "use strict";
+
+  var root = document.getElementById("agent");
+  if (!root) return;
+
+  var elState = root.querySelector("[data-agent-state]");
+  var elCity = root.querySelector("[data-agent-city]");
+  var elNonpub = root.querySelector("[data-agent-nonpublic]");
+  var elStats = root.querySelector("[data-agent-stats]");
+  var elBody = root.querySelector("[data-agent-rows]");
+  var elMore = root.querySelector("[data-agent-more]");
+  var elCsv = root.querySelector("[data-agent-csv]");
+  var elMeta = root.querySelector("[data-agent-meta]");
+  var elStatus = root.querySelector("[data-agent-status]");
+
+  var DATA = null, VIEW = [], LIMIT = 50;
+
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function fold(s) {
+    return String(s || "").toLowerCase()
+      .replace(/ą/g, "a").replace(/ć/g, "c").replace(/ę/g, "e").replace(/ł/g, "l").replace(/ń/g, "n")
+      .replace(/ó/g, "o").replace(/ś/g, "s").replace(/ź/g, "z").replace(/ż/g, "z");
+  }
+
+  function load() {
+    if (DATA) return Promise.resolve(DATA);
+    elStatus.textContent = "Wczytuję wynik agenta…";
+    return fetch("data/luka.json").then(function (r) { return r.json(); }).then(function (d) {
+      DATA = d;
+      var names = Object.keys(d.states);
+      names.forEach(function (n) {
+        var o = document.createElement("option"); o.value = n; o.textContent = n; elState.appendChild(o);
+      });
+      elMeta.textContent = "Przebieg agenta: " + d.generated + ". Rejestr RSPO: " + fmt(d.source_rspo) +
+        " placówek. Przedszkolowo: " + fmt(d.source_pz) + " profili. Dopasowanie po nazwie: " + fmt(d.matched) +
+        ". Bez dopasowania: " + fmt(d.missing) + ". Jedna osoba, jeden wieczór.";
+      elStatus.textContent = "";
+      return d;
+    }).catch(function () {
+      elStatus.textContent = "Nie udało się wczytać wyniku. Odśwież stronę.";
+    });
+  }
+
+  function apply() {
+    if (!DATA) return;
+    var st = elState.value, q = fold(elCity.value.trim()), onlyNP = elNonpub.checked;
+    VIEW = DATA.rows.filter(function (r) {
+      if (st && r.w !== st) return false;
+      if (onlyNP && r.p) return false;
+      if (q && fold(r.m).indexOf(q) < 0) return false;
+      return true;
+    });
+    LIMIT = 50;
+    renderStats(st, onlyNP, q);
+    renderRows();
+  }
+
+  function renderStats(st, onlyNP, q) {
+    var rspo = 0, onpz = 0, miss = 0;
+    if (st) {
+      var s = DATA.states[st];
+      rspo = onlyNP ? s.nonpublic : s.rspo;
+      miss = onlyNP ? s.missing_nonpublic : s.missing;
+      onpz = rspo - miss;
+    } else {
+      Object.keys(DATA.states).forEach(function (k) {
+        var s = DATA.states[k];
+        rspo += onlyNP ? s.nonpublic : s.rspo;
+        miss += onlyNP ? s.missing_nonpublic : s.missing;
+      });
+      onpz = rspo - miss;
+    }
+    var scope = st || "cała Polska";
+    if (onlyNP) scope += ", tylko niepubliczne";
+    elStats.innerHTML =
+      '<div class="fig"><p class="fig__v">' + fmt(rspo) + '</p><p class="fig__l">w rejestrze RSPO, ' + esc(scope) + '</p></div>' +
+      '<div class="fig"><p class="fig__v">' + fmt(onpz) + '</p><p class="fig__l">z nazwą obecną na Przedszkolowo</p></div>' +
+      '<div class="fig"><p class="fig__v">' + fmt(q ? VIEW.length : miss) + '</p><p class="fig__l">' + (q ? 'bez profilu, miejscowość „' + esc(elCity.value.trim()) + '”' : 'bez profilu na Przedszkolowo') + '</p></div>';
+  }
+
+  function renderRows() {
+    var rows = VIEW.slice(0, LIMIT);
+    elBody.innerHTML = rows.map(function (r) {
+      var www = r.www ? '<a href="' + esc(/^https?:/.test(r.www) ? r.www : "https://" + r.www) + '" target="_blank" rel="noopener">' + esc(r.www.replace(/^https?:\/\//, "").replace(/\/$/, "")) + '</a>' : '<span class="dim">brak</span>';
+      return '<tr><td>' + esc(r.n) + '</td><td>' + esc(r.m) + '</td><td>' + esc(r.t) + (r.p ? '' : '<span class="tag">niepubl.</span>') + '</td><td class="num">' + (r.d == null ? '' : fmt(r.d)) + '</td><td>' + www + '</td></tr>';
+    }).join("");
+    if (!rows.length) elBody.innerHTML = '<tr><td colspan="5" class="dim">Nic nie pasuje do filtrów.</td></tr>';
+    var rest = VIEW.length - rows.length;
+    elMore.hidden = rest <= 0;
+    elMore.textContent = rest > 0 ? "Pokaż kolejne " + fmt(Math.min(rest, 200)) + " z " + fmt(rest) : "";
+    elCsv.disabled = !VIEW.length;
+    elCsv.textContent = "Pobierz CSV (" + fmt(VIEW.length) + " wierszy, z telefonem i mailem)";
+  }
+
+  function csv() {
+    var head = ["nazwa", "typ", "wojewodztwo", "miejscowosc", "adres", "kod", "publiczna", "liczba_dzieci", "www", "telefon", "email", "organ_prowadzacy", "rspo"];
+    var lines = [head.join(";")].concat(VIEW.map(function (r) {
+      return [r.n, r.t, r.w, r.m, r.a, r.k, r.p ? "tak" : "nie", r.d == null ? "" : r.d, r.www, r.tel, r.mail, r.org, r.rspo]
+        .map(function (v) { v = String(v == null ? "" : v).replace(/"/g, '""'); return /[;"\n]/.test(v) ? '"' + v + '"' : v; }).join(";");
+    }));
+    var blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "przedszkolowo-luka-" + (elState.value ? fold(elState.value).replace(/\W+/g, "-") : "polska") + ".csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  elState.addEventListener("change", apply);
+  elNonpub.addEventListener("change", apply);
+  elCity.addEventListener("input", apply);
+  elMore.addEventListener("click", function () { LIMIT += 200; renderRows(); });
+  elCsv.addEventListener("click", csv);
+
+  /* wczytaj, gdy sekcja jest widoczna albo od razu, jeśli strona otwarta na #s03 */
+  var started = false;
+  function start() { if (started) return; started = true; load().then(function (d) { if (d) apply(); }); }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) start(); }).observe(root);
+  } else { start(); }
+  if (location.hash === "#s03") start();
+  document.querySelectorAll('[data-target="03"], [data-next="03"]').forEach(function (n) { n.addEventListener("click", start); });
+})();

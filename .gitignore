@@ -1,5 +1,2 @@
-.DS_Store
-Thumbs.db
-node_modules/
-.vercel
-*.log
+# surowe zrzuty rejestrow, odtwarzalne skryptami w agent/ w minute
+agent/data/
