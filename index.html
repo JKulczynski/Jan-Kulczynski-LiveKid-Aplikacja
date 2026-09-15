@@ -150,9 +150,9 @@
     <p class="sec-no"><b>03</b> <span class="mono">Agent</span></p>
     <h2 class="measure">Żeby wnieść swoje pięć groszy do LiveKid już teraz, zrobiłem dla was agenta.</h2>
     <div class="measure">
-      <p>Agent bada rynek placówek i podrzuca te, których nie ma jeszcze w bazie Przedszkolowo. Bierze dwa rejestry państwowe: Rejestr Szkół i Placówek Oświatowych (każde przedszkole i punkt przedszkolny w Polsce) oraz Rejestr Żłobków i Klubów Dziecięcych, z adresem, telefonem i mailem, porównuje je z profilami na Przedszkolowo i zostawia to, czego u was nie ma. Poniżej jego wynik z dzisiaj.</p>
+      <p>Agent bada rynek placówek i podrzuca te, których nie ma jeszcze w bazie Przedszkolowo. Bierze dwa rejestry państwowe: Rejestr Szkół i Placówek Oświatowych (każde przedszkole i punkt przedszkolny w Polsce) oraz Rejestr Żłobków i Klubów Dziecięcych, z adresem, telefonem i mailem, i przy każdej placówce sprawdza, czy ma profil na Przedszkolowo. Poniżej cały rynek z jego wynikiem, domyślnie zawężony do tego, czego u was nie ma.</p>
       <p>Każda placówka na tej liście to jednocześnie brakujący profil w waszej bazie i gotowy kontakt do placówki, która może nie mieć jeszcze systemu.</p>
-      <p class="mono dim">Wybierz rodzaj placówki i województwo, opcjonalnie wpisz miejscowość, pobierz listę.</p>
+      <p class="mono dim">Wybierz rodzaj placówki i województwo, opcjonalnie wpisz miejscowość, odznacz filtry, żeby zobaczyć cały rejestr, pobierz listę.</p>
     </div>
 
     <div id="agent" class="agent">
@@ -163,13 +163,16 @@
           <select data-agent-state><option value="">cała Polska</option></select></label>
         <label class="agent__field"><span class="mono">Miejscowość</span>
           <input type="search" data-agent-city placeholder="np. Kraków" autocomplete="off"></label>
-        <label class="agent__check"><input type="checkbox" data-agent-nonpublic checked> <span>tylko niepubliczne</span></label>
+        <div class="agent__checks">
+          <label class="agent__check"><input type="checkbox" data-agent-missing checked> <span>tylko bez profilu na Przedszkolowo</span></label>
+          <label class="agent__check"><input type="checkbox" data-agent-nonpublic checked> <span>tylko niepubliczne</span></label>
+        </div>
       </div>
       <p class="mono dim" data-agent-status></p>
       <div class="figures" data-agent-stats></div>
       <div class="agent__scroll">
         <table class="agent__table">
-          <thead><tr><th>Placówka</th><th>Miejscowość</th><th>Typ</th><th class="num">Liczba dzieci</th><th>Kontakt</th><th>WWW</th></tr></thead>
+          <thead><tr><th>Placówka</th><th>Miejscowość</th><th>Typ</th><th class="num">Liczba dzieci</th><th>Na Przedszkolowo</th><th>Kontakt</th><th>WWW</th></tr></thead>
           <tbody data-agent-rows></tbody>
         </table>
       </div>
@@ -184,7 +187,7 @@
 
     <h3 class="sub">Jak to działa</h3>
     <div class="measure">
-      <p>Agent to pięć skryptów w folderze <code>agent/</code> w repozytorium tej strony. Pierwsze dwa pobierają przez publiczne API Rejestr Szkół i Placówek Oświatowych, czyli każde przedszkole i punkt przedszkolny w Polsce, razem ze statusem publiczna albo niepubliczna. Trzeci pobiera Rejestr Żłobków i Klubów Dziecięcych. Czwarty bierze listę profili z sitemapy Przedszkolowo. Piąty porównuje nazwy i dla brakujących żłobków dociąga z rejestru telefon, mail i podmiot prowadzący. Cały przebieg trwa kilka minut, można go puścić ponownie, kiedy rejestry się zmienią.</p>
+      <p>Agent to pięć skryptów w folderze <code>agent/</code> w repozytorium tej strony. Pierwsze dwa pobierają przez publiczne API Rejestr Szkół i Placówek Oświatowych, czyli każde przedszkole i punkt przedszkolny w Polsce, razem ze statusem publiczna albo niepubliczna. Trzeci pobiera Rejestr Żłobków i Klubów Dziecięcych. Czwarty bierze listę profili z sitemapy Przedszkolowo. Piąty porównuje nazwy i dla każdego żłobka dociąga z rejestru telefon, mail, podmiot prowadzący i liczbę dzieci. Cały przebieg trwa około pół godziny, można go puścić ponownie, kiedy rejestry się zmienią.</p>
       <p>Dopasowanie jest po nazwie, nie po adresie, bo miejscowość jest tylko na profilach, a pobieranie trzydziestu tysięcy profili nie było potrzebne, żeby pokazać, że to działa. Konsekwencja: placówki o nazwie, która na Przedszkolowo występuje w wielu miastach, agent liczy jako obecne. Lista jest więc raczej za krótka niż za długa. Adresy, telefony i maile pochodzą z rejestrów publicznych, tak jak podała je placówka. „Liczba dzieci" to liczba wychowanków zgłoszona przez placówkę do rejestru; zero zwykle oznacza nową placówkę albo brak aktualizacji. W CSV żłobki mają dodatkowo liczbę miejsc.</p>
     </div>
 
@@ -306,9 +309,9 @@
       <p>To będzie duża odpowiedzialność i wiem, że jej sprostam. Jedyne, czego się obawiam, to czy mój kod przejdzie review u seniora ;) Poniżej repo tej strony i mojej apki Kengo, żeby wspomniany senior mógł już sprawdzać. Zapraszam też do zapoznania się z całym moim GitHubem.</p>
     </div>
 
-    <h3 class="sub">Następny krok</h3>
+    <h3 class="sub">Na koniec</h3>
     <div class="measure">
-      <p>Najprostszy: trzydzieści minut na Meet. Odpowiem na pytania o wszystko wyżej i posłucham, gdzie się mylę.</p>
+      <p>Mam nadzieję, że agent się przyda, a strona była czytelna. Jeśli coś jest niejasne, wystarczy jeden mail albo telefon, dane są poniżej. Będę niecierpliwie czekał na odpowiedź z waszej strony.</p>
     </div>
 
     <div class="contact">
