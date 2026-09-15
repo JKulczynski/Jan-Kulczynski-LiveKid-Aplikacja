@@ -50,7 +50,7 @@
 
   document.querySelectorAll("[data-target]").forEach(function (node) {
     var id = node.getAttribute("data-target");
-    node.addEventListener("click", function () { openDoc(id); });
+    node.addEventListener("click", function (e) { e.preventDefault(); openDoc(id); });
     node.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDoc(id); }
     });
