@@ -174,10 +174,10 @@
       <p class="mono dim src" data-agent-meta></p>
     </div>
 
-    <h3 class="sub">Jak to działa i gdzie się myli</h3>
+    <h3 class="sub">Jak to działa</h3>
     <div class="measure">
-      <p>Agent to pięć skryptów w folderze <code>agent/</code> w repozytorium tej strony: pobranie RSPO i rejestru żłobków przez ich publiczne API, pobranie listy profili Przedszkolowo z sitemapy, dopasowanie po nazwie, dociągnięcie kontaktów do brakujących żłobków. Cały przebieg trwa kilka minut, można go puścić ponownie, kiedy rejestry się zmienią.</p>
-      <p>Dopasowanie jest po nazwie, nie po adresie, bo miejscowość jest tylko na profilach, a pobieranie trzydziestu tysięcy profili nie było potrzebne, żeby pokazać, że to działa. Konsekwencja: placówki o nazwie, która na Przedszkolowo występuje w wielu miastach, agent liczy jako obecne. Lista jest więc raczej za krótka niż za długa. Adresy, telefony i maile pochodzą z rejestrów publicznych, tak jak podała je placówka. „Liczba dzieci" to liczba wychowanków zgłoszona przez placówkę do systemu informacji oświatowej; zero zwykle oznacza nową placówkę albo brak aktualizacji. Rejestr żłobków tej liczby nie podaje.</p>
+      <p>Agent to pięć skryptów w folderze <code>agent/</code> w repozytorium tej strony. Pierwsze dwa pobierają przez publiczne API Rejestr Szkół i Placówek Oświatowych, czyli każde przedszkole i punkt przedszkolny w Polsce, razem ze statusem publiczna albo niepubliczna. Trzeci pobiera Rejestr Żłobków i Klubów Dziecięcych. Czwarty bierze listę profili z sitemapy Przedszkolowo. Piąty porównuje nazwy i dla brakujących żłobków dociąga z rejestru telefon, mail i podmiot prowadzący. Cały przebieg trwa kilka minut, można go puścić ponownie, kiedy rejestry się zmienią.</p>
+      <p>Dopasowanie jest po nazwie, nie po adresie, bo miejscowość jest tylko na profilach, a pobieranie trzydziestu tysięcy profili nie było potrzebne, żeby pokazać, że to działa. Konsekwencja: placówki o nazwie, która na Przedszkolowo występuje w wielu miastach, agent liczy jako obecne. Lista jest więc raczej za krótka niż za długa. Adresy, telefony i maile pochodzą z rejestrów publicznych, tak jak podała je placówka. „Liczba dzieci" to liczba wychowanków zgłoszona do systemu informacji oświatowej; zero zwykle oznacza nową placówkę albo brak aktualizacji. Rejestr żłobków tej liczby nie podaje.</p>
     </div>
 
     <p class="next"><a href="#" data-next="04"><span class="mono">Dalej</span> Kto to zrobił &rarr;</a></p>
