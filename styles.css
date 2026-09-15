@@ -217,6 +217,8 @@ section { padding-block: clamp(4rem, 11vh, 8rem); border-top: 1px solid var(--li
 .lever .mono { color: var(--dim); }
 .lever p { margin-top: 0.6rem; }
 .lever h3 { margin-top: 0.5rem; }
+.lever a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); }
+.lever a:hover { border-bottom-color: var(--paper); }
 
 /* ── Podtytuły i tabela danych ──────────────────────────────── */
 
@@ -238,6 +240,41 @@ h3.sub::before { content: ""; display: block; width: 2.5rem; border-top: 1px sol
 }
 
 .src { text-transform: none; letter-spacing: 0.02em; line-height: 1.6; margin-top: 2.5rem; max-width: 60rem; }
+
+/* ── Linia czasu ────────────────────────────────────────────── */
+
+.tl { position: relative; list-style: none; margin: 2.5rem 0 0; padding: 0; }
+.tl::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 2px; margin-left: -1px; background: var(--paper);
+}
+.tl__item { position: relative; display: grid; grid-template-columns: 1fr 5rem 1fr; align-items: start; margin-bottom: 2.5rem; }
+.tl__item:last-child { margin-bottom: 0; }
+.tl__node {
+  grid-column: 2; grid-row: 1; justify-self: center; margin-top: 0.9rem;
+  width: 1.75rem; height: 1.75rem; border: 3px solid var(--paper); border-radius: 50%;
+  background: transparent; box-sizing: border-box;
+}
+.tl__card { grid-row: 1; position: relative; border: 1px solid var(--line); padding: clamp(1.25rem, 3vw, 2rem); background: var(--ink); }
+.tl__card .mono { color: var(--dim); }
+.tl__card h3 { margin-top: 0.5rem; }
+.tl__card p { margin-top: 0.6rem; }
+.tl__card p:last-child { margin-bottom: 0; }
+.tl__card a { color: var(--paper); text-decoration: none; border-bottom: 1px solid var(--line); }
+.tl__card a:hover { border-bottom-color: var(--paper); }
+.tl__card::before { content: ""; position: absolute; top: 1.7rem; width: 1.65rem; height: 2px; background: var(--paper); }
+.tl__item:nth-child(odd)  .tl__card { grid-column: 1; }
+.tl__item:nth-child(even) .tl__card { grid-column: 3; }
+.tl__item:nth-child(odd)  .tl__card::before { right: -1.65rem; }
+.tl__item:nth-child(even) .tl__card::before { left: -1.65rem; }
+
+@media (max-width: 52rem) {
+  .tl::before { left: 0.875rem; margin-left: 0; }
+  .tl__item { grid-template-columns: 1.75rem 1.5rem 1fr; }
+  .tl__node { grid-column: 1; justify-self: start; }
+  .tl__item .tl__card { grid-column: 3; }
+  .tl__item .tl__card::before { left: -1.5rem; right: auto; width: 1.5rem; }
+}
 
 /* ── Liczby ─────────────────────────────────────────────────── */
 
