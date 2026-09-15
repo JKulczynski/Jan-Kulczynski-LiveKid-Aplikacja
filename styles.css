@@ -117,7 +117,7 @@ strong { font-weight: 700; color: #fff; }
   position: relative;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(17rem, 26%) 1fr;
+  grid-template-columns: minmax(19rem, 30%) 1fr;
   align-items: center;
   gap: clamp(1.5rem, 4vw, 4rem);
   padding: clamp(2rem, 5vh, 4rem) var(--gutter) clamp(4rem, 8vh, 6rem);
