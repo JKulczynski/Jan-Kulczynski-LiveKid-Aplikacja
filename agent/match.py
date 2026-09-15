@@ -5,7 +5,7 @@ Zasada: placówka jest "obecna", jeśli jej nazwa (po normalizacji, na kilka spo
 występuje gdziekolwiek wśród slugów Przedszkolowo. Nazwy powtarzające się w wielu
 miastach liczymy jako obecne, bo rozstrzygnięcie po miejscowości wymagałoby pobrania
 kilkunastu tysięcy profili. Lista brakujących jest więc raczej za krótka niż za długa.
-Dla brakujących żłobków dociągamy szczegóły (mail, www, telefon, podmiot) z rejestru.
+Dla brakujących żłobków dociągamy szczegóły (mail, www, telefon, podmiot, liczba dzieci i miejsc) z rejestru.
 Wynik: ../data/luka.json (czyta go strona, bez backendu).
 """
 import io, json, re, sys, time, collections, datetime, urllib.request, urllib.parse
@@ -117,7 +117,8 @@ def main():
         if not street and len(parts) >= 3: street = ", ".join(parts[2:])
         rows.append({"kat": "zlobek", "n": (x.get("nazwa") or "").strip(),
                      "t": "Żłobek" if x["typRejestru"] == "ZLOBEK" else "Klub dziecięcy", "w": st, "m": loc,
-                     "a": street, "k": da.get("kodPocztowy") or "", "p": public, "d": None,
+                     "a": street, "k": da.get("kodPocztowy") or "", "p": public, "d": det.get("liczbaDzieci"),
+                     "miejsca": det.get("liczbaMiejsc"),
                      "www": (det.get("adresWWW") or "").strip(), "tel": (det.get("telefon") or "").strip(),
                      "mail": (det.get("email") or "").strip(), "id": x["identyfikator"],
                      "org": (pod.get("nazwa") or "").strip()})

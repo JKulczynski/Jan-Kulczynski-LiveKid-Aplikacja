@@ -99,9 +99,9 @@
   }
 
   function csv() {
-    var head = ["nazwa", "typ", "wojewodztwo", "miejscowosc", "adres", "kod", "publiczna", "liczba_dzieci", "www", "telefon", "email", "organ_prowadzacy", "id_rejestru"];
+    var head = ["nazwa", "typ", "wojewodztwo", "miejscowosc", "adres", "kod", "publiczna", "liczba_dzieci", "liczba_miejsc", "www", "telefon", "email", "organ_prowadzacy", "id_rejestru"];
     var lines = [head.join(";")].concat(VIEW.map(function (r) {
-      return [r.n, r.t, r.w, r.m, r.a, r.k, r.p ? "tak" : "nie", r.d == null ? "" : r.d, r.www, r.tel, r.mail, r.org, r.id]
+      return [r.n, r.t, r.w, r.m, r.a, r.k, r.p ? "tak" : "nie", r.d == null ? "" : r.d, r.miejsca == null ? "" : r.miejsca, r.www, r.tel, r.mail, r.org, r.id]
         .map(function (v) { v = String(v == null ? "" : v).replace(/"/g, '""'); return /[;"\n]/.test(v) ? '"' + v + '"' : v; }).join(";");
     }));
     var blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
